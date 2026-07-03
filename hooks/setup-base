@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+cat <<EOF >/etc/profile.d/gradle.sh
+export PATH="$SDK/bin:\$PATH"
+EOF
+

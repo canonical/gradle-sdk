@@ -1,0 +1,28 @@
+name: gradle
+adopt-info: gradle
+build-base: ubuntu@24.04
+license: Apache-2.0
+summary: Gradle Workshop SDK
+description: |
+  This SDK provides Gradle support.
+
+platforms:
+  amd64:
+  arm64:
+
+plugs:
+  gradle-cache:
+    interface: mount
+    workshop-target: /home/workshop/.gradle/caches
+
+parts:
+  gradle:
+    plugin: nil
+    build-packages: [libarchive-tools]
+    override-pull: |
+      VERSION=$(cat "$CRAFT_PROJECT_DIR/VERSION")
+      craftctl set version="$VERSION"
+
+      mkdir -p "$CRAFT_PART_INSTALL"
+      curl -fLO "https://services.gradle.org/distributions/gradle-${VERSION}-bin.zip"
+      bsdtar -xzf "gradle-${VERSION}-bin.zip" --strip-components=1 -C "$CRAFT_PART_INSTALL"
